@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Search</title>
+  <style>
+    #forms {
+      display: flex;
+      gap: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="forms">
+    <form action="/cart/add" method="post" id="add-item-form">
+      <input type="text" id="item-id" placeholder="Item ID">
+      <input type="submit" value="Add to cart">
+    </form>
+
+    <form action="/cart/clear" method="post">
+      <input type="submit" value="Clear cart">
+    </form>
+
+    <form action="/cart/checkout" method="get">
+      <input type="submit" value="Checkout">
+    </form>
+
+    <form action="/cart" method="get">
+      <input type="submit" value="View cart">
+    </form>
+  </div>
+
+  <h2>Cart:</h2>
+  <ul>REPLACE</ul>
+
+  <script>
+    window.addEventListener("load", function () {
+      let form = document.querySelector("#add-item-form");
+      document.querySelector("input").addEventListener("input", function () {
+        form.action = `/cart/add/${this.value}`;
+      });
+    });
+  </script>
+</body>
+
+</html>

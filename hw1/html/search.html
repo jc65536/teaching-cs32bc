@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Search</title>
+</head>
+
+<body>
+  <form action="/search" method="get">
+    <input type="text" name="query" placeholder="Enter your query here">
+    <label for="min-price">Min price: </label>
+    <input type="number" name="min_price" id="min-price">
+    <label for="max-price">Min price: </label>
+    <input type="number" name="max_price" id="max-price">
+    <label for="order-by">Order by: </label>
+    <select name="order_by" id="order-by">
+      <option value="">-</option>
+      <option value="name">Name</option>
+      <option value="price">Price</option>
+    </select>
+    <input type="submit" value="Search">
+  </form>
+
+  <h2>Search results:</h2>
+  <ul>REPLACE</ul>
+
+  <script>
+    window.addEventListener("load", function () {
+      document.querySelector("form").addEventListener("formdata", function (event) {
+        let formData = event.formData;
+        for (let [name, value] of [...formData.entries()]) {
+          if (value === "") {
+            formData.delete(name);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

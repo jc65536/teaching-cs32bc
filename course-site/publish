@@ -1,0 +1,7 @@
+#!/bin/bash
+
+publish_list=(
+    index.html
+)
+
+scp -r "${publish_list[@]}" cs:www/cs32bc
