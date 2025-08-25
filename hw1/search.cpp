@@ -1,10 +1,15 @@
 #include "search.h"
 
 SearchEngine::SearchEngine(const std::vector<Product> *catalog_ptr) {
+    // TODO: Complete the constructor implementation
+    // RM_START
     this->catalog_ptr = catalog_ptr;
+    // RM_END
 }
 
 std::vector<Product> SearchEngine::query(std::string query, int min_price, int max_price, std::string order_by) {
+    // TODO: Complete the query function
+    // RM_START
     std::vector<Product> ans;
     for (const Product &p : *catalog_ptr) {
         if (p.price < min_price || max_price < p.price) {
@@ -40,4 +45,5 @@ std::vector<Product> SearchEngine::query(std::string query, int min_price, int m
     }
 
     return ans;
+    // RM_END
 }

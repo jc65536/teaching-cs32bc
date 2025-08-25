@@ -9,7 +9,7 @@ stdout.
 ## Project structure
 
 The files to edit are `cart.cpp`, `router.cpp`, and `search.cpp`. Follow the
-comments in these files to implement the relevant functions.
+comments in these files to implement the missing functions.
 
 ## Skills tested
 - String manipulation
@@ -19,20 +19,26 @@ comments in these files to implement the relevant functions.
 
 ## Testing
 
+### For fun
+
 A simple HTTP server is provided in `serve.py`. Run `python serve.py`, then go
 to `http://localhost:8000` to access the web app. `serve.py` will automatically
-compile and run your C++ program to do the actual backend work.
+compile and run your C++ program to serve as the backend.
 
 If for any reason you can't run the Python script, you can always test the C++
 program on the command line as follows:
+- Build the program
 ```
-[jason@tiramisu hw1]$ make  # Build the program
+[jason@tiramisu hw1]$ make
 g++ -std=c++20   -c -o main.o main.cpp
 g++ -std=c++20   -c -o router.o router.cpp
 g++ -std=c++20   -c -o search.o search.cpp
 g++ -std=c++20   -c -o cart.o cart.cpp
 g++ -std=c++20 main.o router.o search.o cart.o -o main
-[jason@tiramisu hw1]$ ./main  # Run the program and manually enter queries on stdin
+```
+- Run the program and manually enter queries on stdin
+```
+[jason@tiramisu hw1]$ ./main
 /search?query=coffee
 1008. Drip Coffee (Medium Roast, 12oz) [$2.75] (x30)
 1009. Pour Over Coffee (Single Origin) [$6] (x8)

@@ -1,10 +1,13 @@
 #include "router.h"
 
 Router::Router(SearchEngine *search, Cart *cart) {
+    // TODO: Complete the constructor implementation
+    // RM_START
     this->search = search;
     this->cart = cart;
+    // RM_END
 }
-
+// RM_START
 std::vector<std::vector<std::string>> get_params(std::string query) {
     query.push_back('&');
     std::vector<std::vector<std::string>> ans;
@@ -12,7 +15,7 @@ std::vector<std::vector<std::string>> get_params(std::string query) {
         int i = query.find('&');
         std::string first_pair = query.substr(0, i);
         query = query.substr(i + 1);
-        
+
         int j = first_pair.find('=');
         std::string key = first_pair.substr(0, j);
         std::string val = first_pair.substr(j + 1);
@@ -20,8 +23,11 @@ std::vector<std::vector<std::string>> get_params(std::string query) {
     }
     return ans;
 }
+// RM_END
 
 std::string Router::handle(std::string path) {
+    // TODO: Complete the handle function
+    // RM_START
     if (path == "/") {
         return "Welcome to the online cafe :)\n";
     } else if (path.starts_with("/search")) {
@@ -76,4 +82,5 @@ std::string Router::handle(std::string path) {
     } else {
         return "404 Not Found\n";
     }
+    // RM_END
 }

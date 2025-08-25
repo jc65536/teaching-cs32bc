@@ -1,4 +1,3 @@
-from io import BufferedReader
 from subprocess import run, Popen, PIPE
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
