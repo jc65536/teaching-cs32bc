@@ -7,7 +7,7 @@ SearchEngine::SearchEngine(const std::vector<Product> *catalog_ptr) {
     // RM_END
 }
 
-std::vector<Product> SearchEngine::query(std::string query, int min_price, int max_price, std::string order_by) {
+std::vector<Product> SearchEngine::query(std::string query, int min_price, int max_price) {
     // TODO: Complete the query function
     // RM_START
     std::vector<Product> ans;
@@ -32,16 +32,6 @@ std::vector<Product> SearchEngine::query(std::string query, int min_price, int m
                 break;
             }
         }
-    }
-
-    if (order_by == "name") {
-        std::sort(ans.begin(), ans.end(), [](auto &a, auto &b) {
-            return a.name < b.name;
-        });
-    } else if (order_by == "price") {
-        std::sort(ans.begin(), ans.end(), [](auto &a, auto &b) {
-            return a.price < b.price;
-        });
     }
 
     return ans;

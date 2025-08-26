@@ -34,7 +34,6 @@ std::string Router::handle(std::string path) {
         std::string query;
         int min_price = 0;
         int max_price = INT32_MAX;
-        std::string order_by;
 
         if (path.size() >= 8) {
             auto params = get_params(path.substr(8));
@@ -46,16 +45,14 @@ std::string Router::handle(std::string path) {
                 if (key == "query") {
                     query = val;
                 } else if (key == "min_price") {
-                    min_price = std::stoi(val);
+                    min_price = std::stof(val) * 100;
                 } else if (key == "max_price") {
-                    max_price = std::stoi(val);
-                } else if (key == "order_by") {
-                    order_by = val;
+                    max_price = std::stof(val) * 100;
                 }
             }
         }
 
-        auto results = search->query(query, min_price, max_price, order_by);
+        auto results = search->query(query, min_price, max_price);
         std::string response;
         for (auto &p : results) {
             response.append(p.to_string() + "\n");
