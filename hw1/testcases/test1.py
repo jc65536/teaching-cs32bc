@@ -1,4 +1,5 @@
-from subprocess import Popen, PIPE, run
+import sys
+from subprocess import Popen, PIPE
 from common import Expected, SearchResults, AddedItem, ClearedCart, Checkout
 
 queries = [
@@ -25,7 +26,7 @@ expected: list[Expected] = [
 
 
 def main():
-    proc = Popen(["./main"], text=True, stdin=PIPE, stdout=PIPE)
+    proc = Popen(sys.argv[1], text=True, stdin=PIPE, stdout=PIPE)
 
     for q, ans in zip(queries, expected):
         print(q, file=proc.stdin, flush=True)

@@ -2,7 +2,7 @@
 #define PRODUCT_H
 
 #include <string>
-#include <format>
+#include <sstream>
 
 struct Product {
     int id;
@@ -11,7 +11,9 @@ struct Product {
     int quantity;
 
     std::string to_string() {
-        return std::format("{}. {} [${}] (x{})", id, name, double(price) / 100, quantity);
+        std::stringstream ss;
+        ss << id << ". " << name << " [$" << double(price) / 100 << "] (x" << quantity << ")";
+        return ss.str();
     }
 };
 

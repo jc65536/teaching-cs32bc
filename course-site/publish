@@ -3,6 +3,7 @@
 publish_list=(
     index.html
     syllabus.pdf
+    hw1.zip
 )
 
 scp -r "${publish_list[@]}" cs:www/cs32bc

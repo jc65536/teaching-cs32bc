@@ -2,8 +2,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <ranges>
-#include <print>
 #include "router.h"
 #include "cart.h"
 #include "search.h"
@@ -17,7 +15,7 @@ int main() {
         std::vector<std::string> parts;
 
         int i = 0;
-        for (int _ : std::views::iota(0, 4)) {
+        for (int k = 0; k < 4; k++) {
             if (line[i] == '"') {
                 i++;
                 int j = line.find('"', i);

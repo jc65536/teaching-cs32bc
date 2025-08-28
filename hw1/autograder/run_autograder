@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+
+from pathlib import Path
+from subprocess import run
+import shutil
+import json
+
+results = {
+    "score": 0,
+    "tests": []
+}
+
+
+def comp_check():
+    proc = run(["make"], cwd="/autograder/submission")
+    if proc.returncode == 0:
+        results["tests"].append({
+            "name": "Compilation check",
+            "status": "passed",
+            "visibility": "visible",
+        })
+        results["score"] += 1
+    else:
+        results["tests"].append({
+            "name": "Compilation check",
+            "status": "failed",
+            "visibility": "visible",
+        })
+        exit(0)
+
+
+def provided_tests():
+    for test_path in sorted(Path("/autograder/source/testcases").glob("test*.py")):
+        proc = run(["python3", str(test_path.absolute()),
+                   "/autograder/submission/main"], cwd="/autograder/submission")
+        if proc.returncode == 0:
+            results["tests"].append({
+                "name": test_path.name,
+                "status": "passed",
+                "visibility": "visible",
+            })
+            results["score"] += 1
+        else:
+            results["tests"].append({
+                "name": test_path.name,
+                "status": "failed",
+                "visibility": "visible",
+            })
+
+
+def additional_tests():
+    for test_path in sorted(Path("/autograder/source/additional").glob("test*.py")):
+        proc = run(["python3", str(test_path.absolute()),
+                   "/autograder/submission/main"], cwd="/autograder/submission")
+        if proc.returncode == 0:
+            results["tests"].append({
+                "name": test_path.name,
+                "status": "passed",
+                "visibility": "visible",
+            })
+            results["score"] += 1
+        else:
+            results["tests"].append({
+                "name": test_path.name,
+                "status": "failed",
+                "visibility": "visible",
+            })
+
+
+comp_check()
+provided_tests()
+additional_tests()
+
+with open("/autograder/results/results.json", "w") as f:
+    json.dump(results, f)

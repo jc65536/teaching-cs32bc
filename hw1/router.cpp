@@ -23,6 +23,20 @@ std::vector<std::vector<std::string>> get_params(std::string query) {
     }
     return ans;
 }
+
+bool startswith(const std::string &a, const std::string &b) {
+    if (a.size() < b.size()) {
+        return false;
+    }
+
+    for (int i = 0; i < b.size(); i++) {
+        if (a[i] != b[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
 // RM_END
 
 std::string Router::handle(std::string path) {
@@ -30,10 +44,10 @@ std::string Router::handle(std::string path) {
     // RM_START
     if (path == "/") {
         return "Welcome to the online cafe :)\n";
-    } else if (path.starts_with("/search")) {
+    } else if (startswith(path, "/search")) {
         std::string query;
         int min_price = 0;
-        int max_price = INT32_MAX;
+        int max_price = 1000000;
 
         if (path.size() >= 8) {
             auto params = get_params(path.substr(8));
@@ -58,16 +72,19 @@ std::string Router::handle(std::string path) {
             response.append(p.to_string() + "\n");
         }
         return response;
-    } else if (path.starts_with("/cart")) {
-        if (path.starts_with("/cart/add/")) {
+    } else if (startswith(path, "/cart")) {
+        std::stringstream ss;
+        if (startswith(path, "/cart/add")) {
             int id = std::stoi(path.substr(10));
             cart->add_item(id);
-            return std::format("Added item {}\n", id);
-        } else if (path.starts_with("/cart/clear")) {
+            ss << "Added item " << id << std::endl;
+            return ss.str();
+        } else if (startswith(path, "/cart/clear")) {
             cart->clear();
             return "Cleared cart\n";
-        } else if (path.starts_with("/cart/checkout")) {
-            return std::format("Your total is: ${}\n", cart->calculate_checkout_total() / 100.0);
+        } else if (startswith(path, "/cart/checkout")) {
+            ss << "Your total is: $" << cart->calculate_checkout_total() / 100.0 << std::endl;
+            return ss.str();
         } else {
             auto items = cart->list_items();
             std::string response;
