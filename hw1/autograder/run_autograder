@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
 from pathlib import Path
-from subprocess import run
-import shutil
+from subprocess import PIPE, run
 import json
 
 results = {
@@ -11,8 +10,8 @@ results = {
 }
 
 
-def comp_check():
-    proc = run(["make"], cwd="/autograder/submission")
+def comp_check() -> bool:
+    proc = run(["make"], cwd="/autograder/submission", stdout=PIPE, stderr=PIPE, text=True)
     if proc.returncode == 0:
         results["tests"].append({
             "name": "Compilation check",
@@ -20,13 +19,15 @@ def comp_check():
             "visibility": "visible",
         })
         results["score"] += 1
+        return True
     else:
         results["tests"].append({
             "name": "Compilation check",
             "status": "failed",
             "visibility": "visible",
+            "output": f"-- stdout --\n{proc.stdout}\n-- stderr --\n{proc.stderr}",
         })
-        exit(0)
+        return False
 
 
 def provided_tests():
@@ -35,14 +36,14 @@ def provided_tests():
                    "/autograder/submission/main"], cwd="/autograder/submission")
         if proc.returncode == 0:
             results["tests"].append({
-                "name": test_path.name,
+                "name": f"Provided testcase: {test_path.name}",
                 "status": "passed",
                 "visibility": "visible",
             })
             results["score"] += 1
         else:
             results["tests"].append({
-                "name": test_path.name,
+                "name": f"Provided testcase: {test_path.name}",
                 "status": "failed",
                 "visibility": "visible",
             })
@@ -54,22 +55,22 @@ def additional_tests():
                    "/autograder/submission/main"], cwd="/autograder/submission")
         if proc.returncode == 0:
             results["tests"].append({
-                "name": test_path.name,
+                "name": f"Hidden testcase: {test_path.name}",
                 "status": "passed",
                 "visibility": "visible",
             })
             results["score"] += 1
         else:
             results["tests"].append({
-                "name": test_path.name,
+                "name": f"Hidden testcase: {test_path.name}",
                 "status": "failed",
                 "visibility": "visible",
             })
 
 
-comp_check()
-provided_tests()
-additional_tests()
+if comp_check():
+    provided_tests()
+    additional_tests()
 
 with open("/autograder/results/results.json", "w") as f:
     json.dump(results, f)
