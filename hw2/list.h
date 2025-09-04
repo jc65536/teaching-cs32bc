@@ -7,9 +7,15 @@
 
 template <typename T>
 class List {
-    struct Node {
+    class Node {
         T value;
         Node *next;
+
+    public:
+        T get() const;
+        void set(T value);
+
+        void insert_after(T value);
     };
 
     Node *head;
@@ -20,13 +26,13 @@ public:
 
     List();
 
-    void insert_after(iterator it, T value);
-
     // Return *this
     List &cons(T value);
 
     // Return *this
     List &append(T value);
+
+    Node &index(int i);
 };
 
 #endif

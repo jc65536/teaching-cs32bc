@@ -7,30 +7,33 @@
 
 template <typename T>
 class DList {
-    struct Node {
+    class Node {
         T value;
         Node *prev;
         Node *next;
+
+        T get() const;
+        void set(T value);
+
+    public:
+        void insert_before(T value);
+        void insert_after(T value);
+        T remove(iterator it);
     };
 
     Node *head;
     Node *tail;
 
 public:
-    using iterator = Node *;
-
     DList();
-
-    void insert_before(iterator it, T value);
-    void insert_after(iterator it, T value);
-
-    T remove(iterator it);
 
     // Return *this
     DList &cons(T value);
 
     // Return *this
     DList &append(T value);
+
+    Node &index(int i);
 };
 
 #endif
