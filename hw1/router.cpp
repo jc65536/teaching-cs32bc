@@ -2,12 +2,12 @@
 
 Router::Router(SearchEngine *search, Cart *cart) {
     // TODO: Complete the constructor implementation
-    // RM_START
+    // RM_BEGIN
     this->search = search;
     this->cart = cart;
     // RM_END
 }
-// RM_START
+// RM_BEGIN
 std::vector<std::vector<std::string>> get_params(std::string query) {
     query.push_back('&');
     std::vector<std::vector<std::string>> ans;
@@ -41,7 +41,7 @@ bool startswith(const std::string &a, const std::string &b) {
 
 std::string Router::handle(std::string path) {
     // TODO: Complete the handle function
-    // RM_START
+    // RM_BEGIN
     if (path == "/") {
         return "Welcome to the online cafe :)\n";
     } else if (startswith(path, "/search")) {

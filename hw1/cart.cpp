@@ -2,21 +2,21 @@
 
 Cart::Cart(const std::vector<Product> *catalog_ptr) {
     // TODO: Complete the constructor implementation
-    // RM_START
+    // RM_BEGIN
     this->catalog_ptr = catalog_ptr;
     // RM_END
 }
 
 void Cart::add_item(int id) {
     // TODO: Complete the add_item function
-    // RM_START
+    // RM_BEGIN
     items.push_back(id);
     // RM_END
 }
 
 std::vector<Product> Cart::list_items() {
     // TODO: Complete the list_items function
-    // RM_START
+    // RM_BEGIN
     std::vector<Product> ans;
     for (int i : items) {
         for (const Product &p : *catalog_ptr) {
@@ -31,14 +31,14 @@ std::vector<Product> Cart::list_items() {
 
 void Cart::clear() {
     // TODO: Complete the clear function
-    // RM_START
+    // RM_BEGIN
     items.clear();
     // RM_END
 }
 
 int Cart::calculate_checkout_total() {
     // TODO: Complete the calculate_checkout_total function
-    // RM_START
+    // RM_BEGIN
     int total = 0;
     for (int i : items) {
         for (const Product &p : *catalog_ptr) {

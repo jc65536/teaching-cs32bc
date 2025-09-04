@@ -10,7 +10,7 @@ def rm_impl(path: str):
                 if "RM_END" in line:
                     rm_section = False
             else:
-                if "RM_START" in line:
+                if "RM_BEGIN" in line:
                     rm_section = True
                 else:
                     out.write(line)
