@@ -18,7 +18,7 @@ clean:
 
 publish: clean
 	python ../rm_impl.py $(HEADERS)
-	cd .. && zip hw2.zip -r hw2 --exclude \*.orig hw2/autograder/
+	cd .. && zip hw2.zip -r hw2 --exclude "*.orig" "hw2/autograder/*"
 	for f in $(HEADERS); do mv $$f.orig $$f; done
 
 submission: clean

@@ -191,6 +191,12 @@ public:
     ~List() {
         // TODO
         // RM_BEGIN
+        Node *n = head;
+        while (n != nullptr) {
+            Node *next = n->next;
+            delete n;
+            n = next;
+        }
         // RM_END
     }
 

@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+
+from pathlib import Path
+from subprocess import PIPE, run
+import shutil
+import json
+
+results = {
+    "score": 0,
+    "tests": []
+}
+
+tests: list[str] = []
+
+
+def comp_check() -> bool:
+    res = {
+        "name": "Compilation check",
+        "visibility": "visible",
+    }
+
+    for test in tests:
+        proc = run(["make", test], cwd="/autograder/submission",
+                   stdout=PIPE, stderr=PIPE, text=True)
+
+        if proc.returncode != 0:
+            res["status"] = "failed"
+            res["output"] = f"make {test} failed.\n-- stdout --\n{proc.stdout}\n-- stderr --\n{proc.stderr}"
+            results["tests"].append(res)
+            return False
+
+    res["status"] = "passed"
+    results["tests"].append(res)
+    results["score"] += 1
+    return True
+
+
+def run_tests():
+    for test in tests:
+        proc = run(["valgrind", "--leak-check=yes", f"./{test}"],
+                   cwd="/autograder/submission", stdout=PIPE, stderr=PIPE, text=True)
+        res = {
+            "name": f"Testcase: {test}",
+            "visibility": "visible",
+        }
+
+        if proc.returncode != 0:
+            res["status"] = "failed"
+            res["output"] = f"-- stdout --\n{proc.stdout}"
+            results["tests"].append(res)
+            return
+
+        with open(f"/autograder/source/expected/{test}.txt") as f:
+            expected = f.read()
+
+        if expected != proc.stdout:
+            res["status"] = "failed"
+            res["output"] = f"-- stdout --\n{proc.stdout}"
+            results["tests"].append(res)
+            return
+
+        if "no leaks are possible" not in proc.stderr:
+            res["status"] = "failed"
+            res["output"] = f"Memory leak detected by valgrind\n-- stdout --\n{proc.stdout}"
+            results["tests"].append(res)
+            return
+
+        res["status"] = "passed"
+        results["tests"].append(res)
+        results["score"] += 1
+
+
+for f in Path("/autograder/source/testcases").glob("test*.cpp"):
+    shutil.copy(f, "/autograder/submission")
+    tests.append(f.name.removesuffix(".cpp"))
+
+if comp_check():
+    run_tests()
+
+with open("/autograder/results/results.json", "w") as f:
+    json.dump(results, f)
