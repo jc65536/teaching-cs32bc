@@ -47,6 +47,6 @@ expression.
 ## Todo
 
 - Implement `parse` in `translate.h`
-- Implement the `to_postfix` methods in `translate.h`
+- Implement the `to_infix` methods in `translate.h`
 - Use `make test` to test your program
 - Use `make submission` to create a submission zip file
