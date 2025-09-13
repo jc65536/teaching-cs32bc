@@ -6,6 +6,7 @@ publish_list=(
     hw1.zip
     hw2.zip
     hw3.zip
+    project.zip
 )
 
 scp -r "${publish_list[@]}" cs:www/cs32bc

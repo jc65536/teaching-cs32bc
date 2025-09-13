@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+
+from pathlib import Path
+from subprocess import PIPE, run
+import shutil
+import json
+
+results = {
+    "score": 0,
+    "tests": []
+}
+
+def comp_check() -> bool:
+    res = {
+        "name": "Compilation check",
+        "visibility": "visible",
+    }
+
+    proc = run(["make"], cwd="/autograder/submission",
+                stdout=PIPE, stderr=PIPE, text=True)
+
+    if proc.returncode != 0:
+        res["status"] = "failed"
+        res["output"] = f"Compilation failed.\n-- stdout --\n{proc.stdout}\n-- stderr --\n{proc.stderr}"
+        results["tests"].append(res)
+        return False
+
+    res["status"] = "passed"
+    results["tests"].append(res)
+    results["score"] += 1
+    return True
+
+
+def run_tests():
+    proc = run(["./main"], cwd="/autograder/submission", stdout=PIPE, stderr=PIPE, text=True)
+    res = {
+        "name": f"Testcases",
+        "visibility": "visible",
+        "score": 0.0,
+        "max_score": 325.0,
+        "status": "passed",
+        "output": "For test cases where a route is possible, you are given a point if your solution found a route. For test cases where no route is possible, you are given a point if you correctly returned an empty vector."
+    }
+
+    if proc.returncode != 0:
+        res["status"] = "failed"
+        res["output"] = f"-- stdout --\n{proc.stdout}"
+        results["tests"].append(res)
+        return
+    
+    score = 0
+    
+    with open("/autograder/source/expected.txt") as f:
+        for a, b in zip(f, proc.stdout.splitlines()):
+            a = a.startswith("No route from")
+            b = b.startswith("No route from")
+            if a == b:
+                score += 1
+
+    res["score"] = score
+    results["tests"].append(res)
+    results["score"] += score
+
+
+if comp_check():
+    run_tests()
+
+with open("/autograder/results/results.json", "w") as f:
+    json.dump(results, f)
