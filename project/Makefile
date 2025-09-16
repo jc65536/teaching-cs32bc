@@ -10,7 +10,7 @@ all: main
 main: main.o route.o
 	g++ $^ -o $@
 
-$(SOURCES): $(HEADERS)
+$(SOURCES:%.cpp=%.o): $(HEADERS)
 
 clean:
 	rm -f *.o main

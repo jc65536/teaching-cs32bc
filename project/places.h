@@ -3,6 +3,7 @@
 
 #include <vector>
 // RM_BEGIN
+#include <iostream>
 struct State {
     int budget;
     int gas;

@@ -7,15 +7,15 @@
 #include <iostream>
 
 int main() {
-    std::vector<Place> v;
+    std::vector<Place *> v;
 
     for (int i = 0; i < 26; i++) {
         if (i < 8) {
-            v.push_back(GasStation(i));
+            v.push_back(new GasStation(i));
         } else if (i < 16) {
-            v.push_back(TollGate(i, i * 2 - 5));
+            v.push_back(new TollGate(i, i * 2 - 5));
         } else {
-            v.push_back(Place(i));
+            v.push_back(new Place(i));
         }
     }
 
@@ -25,14 +25,14 @@ int main() {
     while (std::getline(input, line)) {
         int i = line[0] - 'A';
         int j = line[2] - 'A';
-        v[i].add_adj(&v[j]);
-        v[j].add_adj(&v[i]);
+        v[i]->add_adj(v[j]);
+        v[j]->add_adj(v[i]);
     }
 
     // We will print a route for every pair of places
     for (int i = 0; i < 26; i++) {
         for (int j = i + 1; j < 26; j++) {
-            auto route = find_route(&v[i], &v[j]);
+            auto route = find_route(v[i], v[j]);
             if (route.empty()) {
                 std::cout << "No route from " << i << " to " << j << std::endl;
                 continue;
@@ -42,5 +42,9 @@ int main() {
             }
             std::cout << route.back() << std::endl;
         }
+    }
+
+    for (Place *p : v) {
+        delete p;
     }
 }
